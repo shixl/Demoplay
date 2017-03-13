@@ -41,6 +41,7 @@ public class ImagesUtils {
                 itemBean = new ItemBean((i - 1) * type + j, (i - 1) * type + j, bitmap);
                 GameUtils.mItemBeans.add(itemBean);
             }
+
         }
     }
 }
