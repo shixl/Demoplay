@@ -1,0 +1,9 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/icon_svg">
+    <target
+        android:name="path1"
+        android:animation="@animator/icon_svg_anim1" />
+    <target
+        android:name="path2"
+        android:animation="@animator/icon_svg_anim2" />
+</animated-vector>
