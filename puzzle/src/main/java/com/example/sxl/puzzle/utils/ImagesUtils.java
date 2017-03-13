@@ -18,7 +18,6 @@ import java.util.List;
 
 public class ImagesUtils {
 
-
     private ItemBean itemBean;
 
     /**
