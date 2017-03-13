@@ -2,7 +2,11 @@ package com.example.sxl.puzzle.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
+import com.example.sxl.puzzle.R;
+import com.example.sxl.puzzle.activity.PuzzleActivity;
 import com.example.sxl.puzzle.bean.ItemBean;
 
 import java.util.ArrayList;
@@ -41,7 +45,32 @@ public class ImagesUtils {
                 itemBean = new ItemBean((i - 1) * type + j, (i - 1) * type + j, bitmap);
                 GameUtils.mItemBeans.add(itemBean);
             }
+            //保存最后一张图片在完成时填充
+            PuzzleActivity.mLastBitMap = bitmapList.get(type * type - 1);
+            //设置最后一个为空item
+            bitmapList.remove(type*type -1);
+            GameUtils.mItemBeans.remove(type*type -1);
+            Bitmap blankBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.blank);
+            blankBitmap = Bitmap.createBitmap(blankBitmap,0,0,itemWidth,itemHeight);
 
+            bitmapList.add(blankBitmap);
+            GameUtils.mItemBeans.add(new ItemBean(type*type,0,blankBitmap));
+            GameUtils.mBlankItemBean = GameUtils.mItemBeans.get(type*type-1);
         }
+    }
+
+    /**
+     * 处理图片 放大、缩小到合适位置
+     *
+     * @param newWidth  缩放后Width
+     * @param newHeight 缩放后Height
+     * @param bitmap    bitmap
+     * @return bitmap
+     */
+    public Bitmap resizeBitMap(float newWidth ,float newHeight,Bitmap bitmap){
+        Matrix matrix = new Matrix();
+        matrix.postScale(newWidth/bitmap.getWidth(),newHeight/bitmap.getHeight());
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return newBitmap;
     }
 }
