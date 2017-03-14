@@ -46,7 +46,7 @@ public class GameUtils {
         ItemBean tempItemBean = new ItemBean();
         //交换BitmapID
         tempItemBean.setBitmapId(from.getItemId());
-        from.setBitmapId(blank.getItemId());
+        from.setBitmapId(blank.getBitmapId());
         blank.setBitmapId(tempItemBean.getBitmapId());
 
         //交换Bitmap
@@ -112,7 +112,7 @@ public class GameUtils {
         if(data.size() % 2 == 1){
             return getInversions(data) % 2 == 0;
         }else {
-            if(((blankId-1)/PuzzleActivity.TYPE) % 2 == 1 ){
+            if(((int)(blankId-1)/PuzzleActivity.TYPE) % 2 == 1 ){
                 return getInversions(data) % 2 == 0;
             }else {
                 // 从底往上数,空位位于偶数行

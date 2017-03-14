@@ -179,13 +179,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
                 Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
                 intent.putExtra("picPath",imagePath);
-                intent.putExtra("type",mType);
+                intent.putExtra("mType",mType);
                 cursor.close();
                 startActivity(intent);
             }else if(requestCode == RESULT_CAMERA){
                 Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
                 intent.putExtra("picPath",TEMP_IMAGE_PATH);
-                intent.putExtra("type",mType);
+                intent.putExtra("mType",mType);
                 startActivity(intent);
             }
         }
