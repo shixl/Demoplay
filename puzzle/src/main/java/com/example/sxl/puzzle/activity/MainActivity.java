@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TEMP_IMAGE_PATH = Environment.getExternalStorageDirectory().getPath()+"temp.png";
+        TEMP_IMAGE_PATH = Environment.getExternalStorageDirectory().getPath()+"/temp.png";
         mTvPoPup = (TextView) findViewById(R.id.tv_puzzle_main_type_selected);
         mPicList = new ArrayList<>();
         initData();
