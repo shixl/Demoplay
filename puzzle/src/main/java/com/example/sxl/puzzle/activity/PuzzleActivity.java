@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.RelativeLayout.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,8 +21,8 @@ import android.widget.Toast;
 import com.example.sxl.puzzle.R;
 import com.example.sxl.puzzle.adapter.GridItemAdapter;
 import com.example.sxl.puzzle.bean.ItemBean;
-import com.example.sxl.puzzle.utils.GameUtils;
-import com.example.sxl.puzzle.utils.ImagesUtils;
+import com.example.sxl.puzzle.utils.GameUtil;
+import com.example.sxl.puzzle.utils.ImagesUtil;
 import com.example.sxl.puzzle.utils.ScreenUtils;
 
 import java.io.File;
@@ -85,7 +86,7 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.puzzle_details_pic);
+        setContentView(R.layout.xpuzzle_puzzle_detail_main);
         //获取选择的图片
         Bitmap picSelectedTemp;
         // 选择默认图片还是自定义图片
@@ -145,12 +146,12 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
      * 添加显示原图的view
      */
     private void addImages() {
-        RelativeLayout rlPuzzleMain = (RelativeLayout) findViewById(R.id.rl_puzzle_main_layout);
+        RelativeLayout rlPuzzleMain = (RelativeLayout) findViewById(R.id.rl_puzzle_main_main_layout);
         mImageView = new ImageView(PuzzleActivity.this);
         mImageView.setImageBitmap(mPicSelected);
         int x = (int) (mPicSelected.getWidth() * 0.9F);
         int y = (int) (mPicSelected.getHeight() * 0.9F);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(x, y);
+        LayoutParams params = new LayoutParams(x, y);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         //params.addRule(RelativeLayout.BELOW,R.id.ll_puzzle_layout);
         mImageView.setLayoutParams(params);
@@ -162,9 +163,9 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
      * 生成游戏数据
      */
     private void generateGame() {
-        new ImagesUtils().createInitBitmaps(TYPE,mPicSelected,PuzzleActivity.this);
-        GameUtils.getPuzzleGenerator();
-        for(ItemBean temp : GameUtils.mItemBeans){
+        new ImagesUtil().createInitBitmaps(TYPE,mPicSelected,PuzzleActivity.this);
+        GameUtil.getPuzzleGenerator();
+        for(ItemBean temp : GameUtil.mItemBeans){
             mBitmapItemLists.add(temp.getBitmap());
         }
         mAdapter = new GridItemAdapter(this, mBitmapItemLists);
@@ -192,15 +193,15 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
         //将图片放大到固定尺寸
         int screenWidth = ScreenUtils.getScreenSize(this).widthPixels;
         int screenHeight = ScreenUtils.getScreenSize(this).heightPixels;
-        mPicSelected = new ImagesUtils().resizeBitMap(screenWidth*0.8f,screenHeight*0.6f,picSelectedTemp);
+        mPicSelected = new ImagesUtil().resizeBitmap(screenWidth*0.8f,screenHeight*0.6f,picSelectedTemp);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         //判断是否可以移动
-        if(GameUtils.isMove(i)){
+        if(GameUtil.isMoveable(i)){
             //点击交互空格与item的位置
-            GameUtils.swapItems(GameUtils.mItemBeans.get(i),GameUtils.mBlankItemBean);
+            GameUtil.swapItems(GameUtil.mItemBeans.get(i),GameUtil.mBlankItemBean);
             //重新获取数据
             recreateData();
             //通知gv刷新数据
@@ -209,7 +210,7 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
             COUNT_INDEX++;
             mTvPuzzleMainCounts.setText("" + COUNT_INDEX);
             //判断是否成功
-            if(GameUtils.isSuccess()){
+            if(GameUtil.isSuccess()){
                 // 将最后一张图显示完整
                 recreateData();
                 mBitmapItemLists.remove(TYPE*TYPE -1);
@@ -229,7 +230,7 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
      */
     private void recreateData() {
         mBitmapItemLists.clear();
-        for(ItemBean bean: GameUtils.mItemBeans){
+        for(ItemBean bean: GameUtil.mItemBeans){
             mBitmapItemLists.add(bean.getBitmap());
         }
     }
@@ -272,7 +273,7 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
      * 清空配置参数
      */
     private void clearConfig(){
-        GameUtils.mItemBeans.clear();
+        GameUtil.mItemBeans.clear();
         // 停止计时器
         mTimer.cancel();
         mTimerTask.cancel();
