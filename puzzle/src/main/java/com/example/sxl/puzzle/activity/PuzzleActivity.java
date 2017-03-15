@@ -111,7 +111,7 @@ public class PuzzleActivity extends AppCompatActivity implements AdapterView.OnI
         // 显示原图按钮点击事件
         mBtnRestart.setOnClickListener(this);
         // 重置按钮点击事件
-        mBtnRestart.setOnClickListener(this);
+        mBtnImg.setOnClickListener(this);
     }
 
     /**
